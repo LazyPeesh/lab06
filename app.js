@@ -9,13 +9,17 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+// Khai báo và đăng kí thư viện handlebars-dateFormat
+var hbs = require('hbs');
+hbs.registerHelper('dateFormat', require('handlebars-dateformat'));
+
 // 1. Khai báo thư viện mongose để connect đến database server
 var mongoose = require('mongoose');
 
 // 2. Khai báo đường dẫn URI đến database (local hoặc cloud)
 // Note: Cần khai báo rõ tên của database cần sử dụng trong URI
 var local = "mongodb://127.0.0.1:27017/gch1101";
-var cloud = "mongodb+srv://mongo:mongo@cluster0.cdadmxu.mongodb.net/";
+var cloud = "mongodb+srv://mongo:mongo@cluster0.cdadmxu.mongodb.net/gch1101";
 
 // 3. Connect đến database
 // Code này chỉ dùng cho mongoose phiên bản cũ
@@ -29,7 +33,7 @@ var cloud = "mongodb+srv://mongo:mongo@cluster0.cdadmxu.mongodb.net/";
 }); */
 
 // Dùng code mới cho mongose version mới nhất
-mongoose.connect(local)
+mongoose.connect(cloud)
   .then(() => { console.log("Connect to DB succeed !") })
   .catch((err) => {
     console.error(err)
@@ -66,6 +70,6 @@ app.use(function (err, req, res, next) {
 });
 
 // Change port
-app.listen(5000);
+app.listen(process.env.PORT || 3001);
 
 module.exports = app;
